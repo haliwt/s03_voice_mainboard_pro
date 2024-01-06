@@ -9,8 +9,8 @@
 #include "buzzer.h"
 #include "subscription.h"
 #include "publish.h"
-
 #include "mqtt_iot.h"
+#include "bsp_ctl.h"
 
 void (*Single_Usart_ReceiveData)(uint8_t cmd);
 
@@ -57,7 +57,7 @@ void SetPowerOn_ForDoing(void)
 	       Parse_Json_Statement();
 
 	  
-		    if( run_t.gPlasma==1){ //Anion
+		    if(plasma_state()==1){ //Anion
 				run_t.gPlasma=1;
 
 				SendWifiCmd_To_Order(WIFI_KILL_ON);
@@ -70,7 +70,7 @@ void SetPowerOn_ForDoing(void)
 			}
 
 
-			if(run_t.gUlransonic==1){
+			if(bug_state()==1){
 
 					SendWifiCmd_To_Order(WIFI_SONIC_ON);
 					HAL_Delay(2);
@@ -83,7 +83,7 @@ void SetPowerOn_ForDoing(void)
 
 
 
-			if(run_t.gDry==1){
+			if(ptc_state()==1){
 
 				SendWifiCmd_To_Order(WIFI_PTC_ON);
 				HAL_Delay(2);
@@ -151,7 +151,7 @@ void ActionEvent_Handler(void)
 if(run_t.works_break_power_on==0) { 
 
     
-	if(run_t.gDry == 1 && run_t.ptc_warning ==0){
+	if(ptc_state() == 1 && run_t.ptc_warning ==0){
 
 	   PTC_SetHigh();
 
@@ -162,7 +162,7 @@ if(run_t.works_break_power_on==0) {
 		   
 	}
 	//kill
-	if(run_t.gPlasma == 1){
+	if(plasma_state() == 1){
 		
 	     PLASMA_SetHigh();
 	}
@@ -171,7 +171,7 @@ if(run_t.works_break_power_on==0) {
 		PLASMA_SetLow();
 	}
 	//driver bug
-	if(run_t.gUlransonic ==1){
+	if(bug_state() ==1){
 	
 	 
 		HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);//ultrasnoic ON 
@@ -181,7 +181,7 @@ if(run_t.works_break_power_on==0) {
 
 	}
 
-	if(run_t.gPlasma ==0 && run_t.gDry==0){
+	if(plasma_state() ==0 && ptc_state()==0){
 
         run_t.gFan_counter=0;
 		run_t.gFan_continueRun=1;        

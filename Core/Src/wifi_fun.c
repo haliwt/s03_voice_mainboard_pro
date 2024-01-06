@@ -1,73 +1,17 @@
 #include "wifi_fun.h"
-#include "cmd_link.h"
-#include "run.h"
-#include "fan.h"
-#include "tim.h"
-#include "special_power.h"
-#include "esp8266.h"
-#include "publish.h"
-#include "subscription.h"
-#include "dht11.h"
-#include "usart.h"
-#include "mqtt_iot.h"
-#include "flash.h"
+#include "bsp.h"
 
 
 WIFI_FUN   wifi_t;
 uint8_t sub_send_power_on_times;
 
 
-void (*PowerOn)(void);
-void (*PowerOff)(void);
-void (*Ai_Fun)(uint8_t sig);
 
-
-void (*SetTimes)(void);
-void (*SetTemperature)(void);
 uint8_t get_rx_beijing_time_enable;
 
 
 static void AutoReconnect_Wifi_Neware_Function(void);
-
-
-void PowerOn_Host(void (* poweronHandler)(void))
-{
-    PowerOn = poweronHandler;  
-
-}
-
-
-void PowerOff_Host(void(*poweroffHandler)(void))
-{
-   PowerOff = poweroffHandler;
-
-}
-
 uint8_t first_connect;
-/****************************************************************
-     * 
-     * Function Name:void AI_Function_Host(void(*AIhandler)(uint8_t sig))
-     * Function: take with reference of function pointer
-     * 
-     * 
-****************************************************************/
-void AI_Function_Host(void(*AIhandler)(uint8_t sig))
-{
-    Ai_Fun=AIhandler;
-}
-
-void SetTimeHost(void(*timesHandler)(void))
-{
-    SetTimes = timesHandler;
-
-}
-
-
-void SetTemperatureHost(void(*temperatureHandler)(void))
-{
-    SetTemperature = temperatureHandler ;
-
-}
 
 /***********************************************
    *
@@ -240,14 +184,14 @@ void RunWifi_Command_Handler(void)
 			
     
 			if(run_t.gPower_flag == POWER_ON){
-			 if(run_t.app_timer_power_off_flag == 0 && run_t.gPower_On ==POWER_ON && (run_t.app_timer_power_on_flag==0||run_t.app_timer_power_on_flag==3)){
+			 if(run_t.app_timer_power_off_flag == 0 && power_state()==POWER_ON && (run_t.app_timer_power_on_flag==0||run_t.app_timer_power_on_flag==3)){
 				Update_Dht11_Totencent_Value();
 				HAL_Delay(300);
 			
 			 	}
 			
 			
-			if(wifi_t.gTimer_get_beijing_time > 423 && run_t.gPower_On ==POWER_ON){ //&& run_t.power_on_send_bejing_times==0){ //
+			if(wifi_t.gTimer_get_beijing_time > 423 && power_state() ==POWER_ON){ //&& run_t.power_on_send_bejing_times==0){ //
 			   wifi_t.gTimer_get_beijing_time=0;
 			  
 			   run_t.set_beijing_time_flag=1; //set beijing times .
@@ -278,7 +222,7 @@ void RunWifi_Command_Handler(void)
 
 	   case wifi_get_beijing_time://7
 
-	    if(run_t.gPower_On==POWER_ON ){
+	    if(power_state()==POWER_ON ){
 	 
 		 esp8266data.linking_tencent_cloud_doing =0;
 	   	 if(run_t.set_beijing_time_flag ==1){   //&& wifi_t.gTimer_beijing_time>1){

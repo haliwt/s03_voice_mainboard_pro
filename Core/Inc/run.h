@@ -48,6 +48,9 @@ typedef enum{
 
 	 PLASMA_ON = 0x20,
 	 PLASMA_OFF = 0x21,
+	 
+	 BUG_ON = 0x30,
+	 BUG_OFF = 0x31,
 
 	 FAN_ON =0x10,
 	 FAN_OFF = 0x11,
@@ -123,13 +126,13 @@ typedef struct _RUN_T{
 	uint8_t gFan_pwm_duty_level;
 	uint8_t gFan_continueRun;
 	uint8_t gFan_counter;
-	uint8_t  gFan;
+
     //ptc:
     uint8_t ptc_first_detected_times;
   
       
+	  uint8_t  gFan;
 
-      uint8_t  gAi;
       uint8_t  gPlasma;
       uint8_t  gDry;
 
@@ -216,7 +219,7 @@ void SystemReset(void);
 
 void MainBoard_Self_Inspection_PowerOn_Fun(void);
 
-void RunCommand_Connect_Handler(void);
+void RunCommand_DisplayBoard_Handler(void);
 
 
 #endif 

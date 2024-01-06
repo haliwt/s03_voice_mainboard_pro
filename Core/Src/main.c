@@ -6,12 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
-  * UYIJIA Version 4.2  DATA.2023.07.27
+  * This software is voice sound mainboard Codes
+  * UYIJIA Version 1.0  DATA.2024.01.06
   *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+  * 
+  * 
+  * 
   *
   ******************************************************************************
   */
@@ -24,18 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "delay.h"
-#include "esp8266.h"
-#include "cmd_link.h"
-#include "mqtt_iot.h"
-#include "run.h"
-#include "subscription.h"
-#include "publish.h"
-#include "interrupt_manager.h"
-#include "wifi_fun.h"
-#include "buzzer.h"
-#include "dht11.h"
-#include "adc.h"
+#include "bsp.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,13 +90,15 @@ int main(void)
 
   MX_ADC1_Init();
 
-
+  MX_IWDG_Init();
   MX_TIM1_Init();
   MX_TIM3_Init();
   
   MX_TIM16_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
+  
+  ctl_Init();
   /* USER CODE BEGIN 2 */
    HAL_TIM_Base_Start_IT(&htim3);//HAL_TIM_Base_Start(&htim3);
    UART_Start_Receive_IT(&huart1,inputBuf,1);
@@ -133,7 +124,7 @@ int main(void)
 
     if( run_t.decodeFlag ==0){
 	
-    	RunCommand_Connect_Handler();
+    	RunCommand_DisplayBoard_Handler();
     	
         RunWifi_Command_Handler();
         if(wifi_t.get_rx_beijing_time_enable==0){
@@ -143,9 +134,6 @@ int main(void)
         USART1_Cmd_Error_Handler(&huart1);
         USART2_Cmd_Error_Handler(&huart2);
    }
-   
-	
-
   }
   /* USER CODE END 3 */
 }

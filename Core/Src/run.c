@@ -1,18 +1,6 @@
 #include "run.h"
-#include "wifi_fun.h"
-#include "dht11.h"
-#include "fan.h"
-#include "tim.h"
-#include "cmd_link.h"
-#include "special_power.h"
-#include "buzzer.h"
-#include "esp8266.h"
-#include "mqtt_iot.h"
-#include "publish.h"
-#include "flash.h"
-#include "usart.h"
-#include "subscription.h"
-#include "adc.h"
+#include "bsp.h"
+
 
 
 RUN_T run_t; 
@@ -300,7 +288,7 @@ static void Single_Command_ReceiveCmd(uint8_t cmd)
  			run_t.gDry = 0;
 			if( no_buzzer_sound_dry_off !=1)
 			    Buzzer_KeySound();
-			 if(run_t.gPlasma ==0){ //plasma turn off flag
+			 if(plasma_state() ==0){ //plasma turn off flag
 			  run_t.gFan_counter =0;
 			   run_t.gFan_continueRun =1;
 
@@ -357,6 +345,17 @@ static void Single_Command_ReceiveCmd(uint8_t cmd)
 	        run_t.dp_link_wifi_fail =0;
 
 
+	   break;
+
+	   case BUG_ON:
+
+	       run_t.gUlransonic = 1;
+
+	   break;
+
+
+	   case BUG_OFF:
+           run_t.gUlransonic =0;
 	   break;
 
 
@@ -608,7 +607,7 @@ void RunCommand_MainBoard_Fun(void)
 	 }
 	else{
 
-         if(run_t.gPower_On == POWER_OFF && run_t.app_timer_power_off_flag ==0){
+         if(power_state() == POWER_OFF && run_t.app_timer_power_off_flag ==0){
 		  if(run_t.gFan_counter < 60){
           
                    // Fan_One_Speed();
@@ -634,7 +633,7 @@ void RunCommand_MainBoard_Fun(void)
 	case POWER_ON_FAN_CONTINUCE_RUN_ONE_MINUTE:
   
 	    
-	 if(run_t.gPower_On ==POWER_ON && run_t.gFan_continueRun ==1){
+	 if(power_state() ==POWER_ON && run_t.gFan_continueRun ==1){
 
               if(run_t.gFan_counter < 60){
           
@@ -697,7 +696,7 @@ void MainBoard_Self_Inspection_PowerOn_Fun(void)
        run_t.gTimer_ptc_adc_times=0;
     }
 
-	 if(esp8266data.esp8266_login_cloud_success==1 && run_t.gPower_On  !=POWER_ON ){
+	 if(esp8266data.esp8266_login_cloud_success==1 && power_state()!=POWER_ON ){
        
            if(send_power_off_flag==0){
             send_power_off_flag++;
@@ -717,13 +716,13 @@ void MainBoard_Self_Inspection_PowerOn_Fun(void)
 
 /**************************************************************
 	*
-	*Function Name: void RunCommand_Connect_Handler(void)
+	*Function Name: void RunCommand_DisplayBoard_Handler(void)
 	*Function: power on and run command
 	*
 	*
 	*
 **************************************************************/
-void RunCommand_Connect_Handler(void)
+void RunCommand_DisplayBoard_Handler(void)
 {
      switch(run_t.rx_command_tag){
 
