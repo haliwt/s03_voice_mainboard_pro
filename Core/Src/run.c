@@ -97,15 +97,12 @@ void Decode_RunCmd(void)
 
 	  case 'M':
 	  	if(run_t.gPower_flag==POWER_ON){
-             
              run_t.decodeFlag =0;
-           
              run_t.set_temperature_value = cmdType_2;
-			 if(esp8266data.esp8266_login_cloud_success==1)
-			       MqttData_Publis_SetTemp(run_t.set_temperature_value);
-			 	   HAL_Delay(200);
-			  
-         }
+			 if(esp8266data.esp8266_login_cloud_success==1){
+			      MqttData_Publis_SetTemp(run_t.set_temperature_value);
+			 	  HAL_Delay(200);
+			 }
 	  
 
 	  break;
@@ -114,8 +111,10 @@ void Decode_RunCmd(void)
 		  if(run_t.gPower_flag==POWER_ON){
              #if 0
              run_t.set_temperature_value = cmdType_2;
-			 if(esp8266data.esp8266_login_cloud_success==1)
+			 if(esp8266d1ata.esp8266_login_cloud_success==1){
 				 MqttData_Publis_SetTime(run_t.set_temperature_value);
+
+			 }
 			#endif    
          }
 	  
