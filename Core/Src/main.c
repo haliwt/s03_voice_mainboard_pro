@@ -118,9 +118,9 @@ int main(void)
     /* USER CODE END WHILE */
    
     /* USER CODE BEGIN 3 */
+	bsp_Idle();
 	MainBoard_Self_Inspection_PowerOn_Fun();
-
-	Decode_Function();
+    Decode_Function();
 
     if( run_t.decodeFlag ==0){
 	

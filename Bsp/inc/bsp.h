@@ -27,9 +27,10 @@
 #include "interrupt_manager.h"
 #include "bsp_ctl.h"
 
-
+void bsp_Idle(void);
 
 
 
 
 #endif 
+

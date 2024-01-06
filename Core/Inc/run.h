@@ -90,7 +90,7 @@ typedef struct _RUN_T{
 	uint8_t wifi_set_temperature_value_flag;
 	uint8_t buzzer_sound_flag ;
     //iwdg ref
-	uint8_t process_run_guarantee_flag;
+
 	uint8_t usart2_error_falg ;
 	uint8_t power_off_fan_state ;
     uint8_t wifi_run_set_restart_flag ;
@@ -166,6 +166,8 @@ typedef struct _RUN_T{
 	  uint8_t ptc_warning;
 	  uint8_t ptc_remove_warning_send_data;
 
+	   uint8_t fan_warning;
+
 
 	  uint8_t gTimer_app_power_on;
 	  uint8_t gTimer_publish_dht11;
@@ -173,7 +175,7 @@ typedef struct _RUN_T{
 	  uint8_t gTimer_auto_detected_net_link_state;
 	  uint8_t gTimer_fan_adc_times;
 	  uint8_t gTimer_ptc_adc_times;
-      uint8_t fan_warning;
+      uint8_t gTimer_food_dog;
 	
 
 	  

@@ -94,7 +94,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	}
 
 	
-	if(huart->Instance==USART1)//if(huart==&huart1) // 
+	if(huart->Instance==USART1)//display panel link // 
 	{
         //test_counter_usat1++;
 		switch(state)
@@ -177,6 +177,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  run_t.gTimer_usart2_error++;
 	  run_t.gTimer_linking_tencen_counter++;
 	  run_t.gFan_counter++;
+	  run_t.gTimer_food_dog++;
 	  }
  	}
  }

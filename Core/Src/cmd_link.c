@@ -50,14 +50,9 @@ void (*EUSART_RxDefaultInterruptHandler)(void);
 void Decode_Function(void)
 {
    if(run_t.decodeFlag==1){
-
-    
-      // run_t.decodeFlag =0;
-	  run_t.process_run_guarantee_flag=1;
+      //run_t.decodeFlag =0;
       Decode_RunCmd();
-   
-      
-     }
+  }
 }
 
 void USART1_Cmd_Error_Handler(UART_HandleTypeDef *huart)

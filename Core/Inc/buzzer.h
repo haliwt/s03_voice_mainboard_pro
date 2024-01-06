@@ -9,9 +9,13 @@ extern IWDG_HandleTypeDef IWDG_Handler;
 
 
 void Buzzer_KeySound(void);
+void Buzzer_KeySound_Off(void);
 
-void IWDG_Init(uint8_t prer,uint16_t rlr);
-void IWDG_Feed(void);
+void Buzzer_Fan_Error_Sound(void);
+void Buzzer_Ptc_Error_Sound(void);
+
+
+
 
 
 #endif 
