@@ -178,21 +178,17 @@ static void Single_Power_ReceiveCmd(uint8_t cmd)
 
                 
                 run_t.decodeFlag =0;
+	            run_t.power_on_from_display_flag =1;
                
-                SendWifiData_To_Cmd(0x54); //0x52= 'R'
-    		    PTC_SetHigh();
-                Update_DHT11_Value(); 
-               
-                run_t.rx_command_tag=POWER_ON;
-               
+//                SendWifiData_To_Cmd(0x54); //0x52= 'R'
+//    		    PTC_SetHigh();
+//                Update_DHT11_Value(); 
+//               
+//                run_t.rx_command_tag=POWER_ON;
+//               
     	     
-                
-
-            
-           
-      run_t.gTimer_send_dit=60;
-	 
-	cmd=0xff;  
+               run_t.gTimer_send_dit=60;
+				cmd=0xff;  
      break;
 
 
@@ -200,22 +196,17 @@ static void Single_Power_ReceiveCmd(uint8_t cmd)
 
     case 0x00: //power off
 
-         buzzer_sound=0;
-        if(buzzer_power_Off_sound==0){
-            buzzer_power_Off_sound++;
-        Buzzer_KeySound();
-        HAL_Delay(100);
-
-        }
+      
         run_t.decodeFlag =0;
+		run_t.power_off_from_display_flag =1;
 
         
        
-        SendWifiData_To_Cmd(0x53); //0x52= 'R'
-        PTC_SetLow();
-      
-        run_t.rx_command_tag=POWER_OFF;
-       
+//        SendWifiData_To_Cmd(0x53); //0x52= 'R'
+//        PTC_SetLow();
+//      
+//        run_t.rx_command_tag=POWER_OFF;
+//       
         
         cmd = 0xff;
     break;

@@ -122,6 +122,8 @@ int main(void)
 	bsp_Idle();
 	MainBoard_Self_Inspection_PowerOn_Fun();
     Decode_Function();
+	Power_On_From_Display_Hanlder();
+	Power_Off_From_Display_Hanlder();
 
     if( run_t.decodeFlag ==0){
 	

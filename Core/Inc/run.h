@@ -75,6 +75,8 @@ typedef struct _RUN_T{
 	uint8_t gPower_On;
 	uint8_t wifi_gPower_On;
 	uint8_t gPower_flag;
+	uint8_t power_on_from_display_flag;
+    uint8_t power_off_from_display_flag;
 
 	uint8_t gDht11_flag;
 	uint8_t gTemperature;

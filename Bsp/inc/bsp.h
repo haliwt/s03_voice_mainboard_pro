@@ -30,6 +30,8 @@
 void bsp_Idle(void);
 
 
+void Power_On_From_Display_Hanlder(void);
+void Power_Off_From_Display_Hanlder(void);
 
 
 #endif 
