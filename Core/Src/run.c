@@ -162,18 +162,18 @@ static void Single_Power_ReceiveCmd(uint8_t cmd)
     case 0x01: // power on
 
            
-              
-                buzzer_power_Off_sound=0;
-
-               
-                if(buzzer_sound==0){ 
-                    buzzer_sound++;
-                  
-                   Buzzer_KeySound();
-                        
-                   
-                    
-                }
+//              
+//                buzzer_power_Off_sound=0;
+//
+//               
+//                if(buzzer_sound==0){ 
+//                    buzzer_sound++;
+//                  
+//                   Buzzer_KeySound();
+//                        
+//                   
+//                    
+//                }
               //  if(buzzer_sound==5)Buzzer_KeySound();
 
                 
