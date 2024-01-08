@@ -80,7 +80,7 @@ void Decode_RunCmd(void)
                 
               run_t.decodeFlag =0;
 		   }
-		   else if(cmdType_2==0x14){
+		   else if(cmdType_2==MODE_TIMER){ //0x14
                 run_t.gModel =2; //Timer timing of model
                 
                 Buzzer_KeySound();
@@ -90,7 +90,7 @@ void Decode_RunCmd(void)
 		        HAL_Delay(200);
                 
             }
-            else if(cmdType_2==0x04){
+            else if(cmdType_2==MODE_AI){ //0x04
                 run_t.gModel =1;  // AI model 
                 Buzzer_KeySound();
             
@@ -98,6 +98,21 @@ void Decode_RunCmd(void)
 			    MqttData_Publish_SetState(0x1); //Ai model->beijing_time
 			    HAL_Delay(200);
             }
+			else if(cmdType_2==WIFI_LINK_STATE){
+
+			    if(esp8266_t.esp8266_login_cloud_success==1){
+					
+				  SendWifiData_To_Cmd(0x01) ; //link succes net
+                    
+                } 
+				else{
+
+				  SendWifiData_To_Cmd(0); //link net fail.
+
+
+				}
+				
+			}
            
            
         }
@@ -144,7 +159,7 @@ void Decode_RunCmd(void)
 
 
 	  case 'Z' ://buzzer sound 
-	    if(run_t.gPower_flag==POWER_ON){
+	    //if(run_t.gPower_flag==POWER_ON){
 
             
 
@@ -158,7 +173,7 @@ void Decode_RunCmd(void)
 			}
 			 
 		
-		}
+		//}
      
 	    break;
  	}
@@ -263,9 +278,10 @@ static void Single_Command_ReceiveCmd(uint8_t cmd)
 	   if(run_t.noBuzzer_sound_dry_flag !=1){
 		     Buzzer_KeySound();
 		 }
-		if(esp8266_t.esp8266_login_cloud_success==1)
+		if(esp8266_t.esp8266_login_cloud_success==1){
 		 MqttData_Publish_SetPtc(0x01);
 		 HAL_Delay(200);
+		}
 		 
        break;
 
@@ -282,34 +298,53 @@ static void Single_Command_ReceiveCmd(uint8_t cmd)
 			   
 
 		     }
-			if(esp8266_t.esp8266_login_cloud_success==1)
+			if(esp8266_t.esp8266_login_cloud_success==1){
 			MqttData_Publish_SetPtc(0x0);
 			HAL_Delay(200);
+			}
 			
        break;
 
+	   case VOICE_DRY_ON:
+	   	  run_t.gDry = 1;
+	   	  Buzzer_KeySound();
+		 
+		if(esp8266_t.esp8266_login_cloud_success==1){
+		 MqttData_Publish_SetPtc(0x01);
+		 HAL_Delay(200);
+		}
+
+	   break;
+
+	   case VOICE_DRY_OFF:
+	   	   run_t.gDry = 0;
+	   	   Buzzer_KeySound();
+		 
+		if(esp8266_t.esp8266_login_cloud_success==1){
+		 MqttData_Publish_SetPtc(0x0);
+		 HAL_Delay(200);
+		}
+
+	   break;
+
        case PLASMA_ON:
        		run_t.gPlasma=1;
-       		run_t.gUlransonic =1;
-	    Buzzer_KeySound();
+            Buzzer_KeySound();
 	   if(esp8266_t.esp8266_login_cloud_success==1){
 	        MqttData_Publish_SetPlasma(1) ;//杀菌
 	        HAL_Delay(200);
-	        MqttData_Publish_SetUltrasonic(1); //超声波
-	        HAL_Delay(200);
+	       
 	   	}
 	   
        break;
 
        case PLASMA_OFF:
            run_t.gPlasma=0;
-           run_t.gUlransonic =0;
 	    Buzzer_KeySound();
 	   if(esp8266_t.esp8266_login_cloud_success==1){
 	       MqttData_Publish_SetPlasma(0) ;//杀菌
 	        HAL_Delay(200);
-	        MqttData_Publish_SetUltrasonic(0); //超声波
-	        HAL_Delay(200);
+	      
 	   	}
 	   
        break;
@@ -334,6 +369,28 @@ static void Single_Command_ReceiveCmd(uint8_t cmd)
 	        run_t.dp_link_wifi_fail =0;
 
 
+	   break;
+
+	     case BUG_ON:
+	   	run_t.gUlransonic =1;
+		Buzzer_KeySound();
+	   	if(esp8266_t.esp8266_login_cloud_success==1){
+	        MqttData_Publish_SetUltrasonic(1); //超声波
+	        HAL_Delay(200);
+	   	}
+
+	   break;
+
+
+	   case BUG_OFF:
+
+	    run_t.gUlransonic =0;
+	    Buzzer_KeySound();
+	   if(esp8266_t.esp8266_login_cloud_success==1){
+	        MqttData_Publish_SetUltrasonic(0); //超声波
+	        HAL_Delay(200);
+	   	}
+	   	
 	   break;
 
 

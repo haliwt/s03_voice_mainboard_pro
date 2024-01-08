@@ -53,7 +53,7 @@ void Decode_Function(void)
 
     
       // run_t.decodeFlag =0;
-	  run_t.process_run_guarantee_flag=1;
+
       Decode_RunCmd();
    
       

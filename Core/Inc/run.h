@@ -43,19 +43,28 @@ typedef enum{
 	 DRY_ON = 0x40,
 	 DRY_OFF = 0x41,
 
+	 VOICE_DRY_ON = 0x60,
+	 VOICE_DRY_OFF = 0x61,
+
 	 DRY_ON_NO_BUZZER = 0x90,
 	 DRY_OFF_NO_BUZZER = 0x91,
 
 	 PLASMA_ON = 0x20,
 	 PLASMA_OFF = 0x21,
 
+	 BUG_ON = 0x30,
+	 BUG_OFF = 0x31,
+
 	 FAN_ON =0x10,
 	 FAN_OFF = 0x11,
 
 	 MODE_AI = 0x04,
 	 MODE_TIMER = 0x14,
+
+	 
 	 MODE_AI_NO_BUZZER= 0x44,
 
+     WIFI_LINK_STATE = 0x50,
 	 WIFI_CONNECT_FAIL = 0x55,
      DISPLAY_PANNEL_CONNECT_WIFI_SUCCESS= 0xAA,
 
@@ -86,7 +95,7 @@ typedef struct _RUN_T{
 	uint8_t wifi_set_temperature_value_flag;
 	uint8_t buzzer_sound_flag ;
     //iwdg ref
-	uint8_t process_run_guarantee_flag;
+
 	uint8_t usart2_error_falg ;
 
     uint8_t wifi_run_set_restart_flag ;
@@ -136,6 +145,7 @@ typedef struct _RUN_T{
 
 	  uint8_t  gUlransonic;
 	  uint8_t  gModel;
+	
     
 
 	  
