@@ -26,82 +26,9 @@ void bsp_Idle(void)
 	
 	/* 例如 uIP 协议，可以插入uip轮询函数 */
 	//TOUCH_CapScan();
-	
+	 Decode_Function();
   
 
 }
 
 
-void Power_On_From_Display_Hanlder(void)
-{
-
-    switch(run_t.power_on_from_display_flag){
-
-	case 1:
-      Buzzer_KeySound();
-	  run_t.power_on_from_display_flag =2;
-
-	break;
-
-
-	case 2:
-	  SendWifiData_To_Cmd(0x54); //0x52= 'R'
-	
-	 
-	  run_t.rx_command_tag=POWER_ON;
-	  run_t.power_on_from_display_flag =3;
-
-    
-    break;
-
-	case 3:
-
-
-	 
-	  Update_DHT11_Value();
-	  PTC_SetHigh();
-
-	
-	run_t.power_on_from_display_flag =0;
-	break;
-
-	default:
-
-	break;
-
-    }
-
-}
-
-void Power_Off_From_Display_Hanlder(void)
-{
-
-    switch(run_t.power_off_from_display_flag){
-
-	case 1:
-      Buzzer_KeySound();
-	  run_t.power_off_from_display_flag =2;
-
-	break;
-
-	case 2:
-	  SendWifiData_To_Cmd(0x53); //0x52= 'R'
-
-	  run_t.rx_command_tag=POWER_OFF;
-	   run_t.power_off_from_display_flag =3;
-
-	break;
-
-	case 3:
-		  
-		  PTC_SetLow();
-       run_t.power_off_from_display_flag =0xff;
-	break;
-
-	default:
-
-	break;
-
-    }
-
-}

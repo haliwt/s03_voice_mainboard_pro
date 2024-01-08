@@ -29,7 +29,7 @@
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
-USART_DataBuf wifi_usart_data;
+USART_DataBuf UART2_DATA;
 
 /* USART1 init function */
 

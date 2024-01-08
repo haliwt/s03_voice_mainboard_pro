@@ -30,8 +30,8 @@ typedef enum{
    POWER_CONNECTOR_WIFI,
    UPDATE_TO_PANEL_DATA,
    WIFI_RESTART_INIT,
-   FAN_CONTINUCE_RUN_ONE_MINUTE,
-   POWER_ON_FAN_CONTINUCE_RUN_ONE_MINUTE,
+   POWER_OFF_FAN_RUN_ONE_MINUTE,
+   POWER_ON_FAN_RUN_ONE_MINUTE,
   
    POWER_NULL, //9
    KEY_NULL
@@ -48,9 +48,6 @@ typedef enum{
 
 	 PLASMA_ON = 0x20,
 	 PLASMA_OFF = 0x21,
-	 
-	 BUG_ON = 0x30,
-	 BUG_OFF = 0x31,
 
 	 FAN_ON =0x10,
 	 FAN_OFF = 0x11,
@@ -73,10 +70,7 @@ typedef enum{
 typedef struct _RUN_T{
     
 	uint8_t gPower_On;
-	uint8_t wifi_gPower_On;
 	uint8_t gPower_flag;
-	uint8_t power_on_from_display_flag;
-    uint8_t power_off_from_display_flag;
 
 	uint8_t gDht11_flag;
 	uint8_t gTemperature;
@@ -92,11 +86,13 @@ typedef struct _RUN_T{
 	uint8_t wifi_set_temperature_value_flag;
 	uint8_t buzzer_sound_flag ;
     //iwdg ref
-
+	uint8_t process_run_guarantee_flag;
 	uint8_t usart2_error_falg ;
-	uint8_t power_off_fan_state ;
-    uint8_t wifi_run_set_restart_flag ;
 
+    uint8_t wifi_run_set_restart_flag ;
+    //process run on 
+    uint8_t run_power_on_step;
+    uint8_t wifi_the_first_login_tencent_cloud_success;
 	
  
 
@@ -126,15 +122,15 @@ typedef struct _RUN_T{
 
 	//fan:
 	uint8_t gFan_pwm_duty_level;
-	uint8_t gFan_continueRun;
-	uint8_t gFan_counter;
 
+	uint8_t gFan_counter;
+	uint8_t  gFan;
     //ptc:
     uint8_t ptc_first_detected_times;
   
       
-	  uint8_t  gFan;
 
+      uint8_t  gAi;
       uint8_t  gPlasma;
       uint8_t  gDry;
 
@@ -147,6 +143,8 @@ typedef struct _RUN_T{
 	  uint8_t send_link_cloud_times;
 	  //wifi link ref
 	  uint8_t first_link_tencent_cloud_flag ;
+      uint8_t gTimer_run_power_on;
+	  uint8_t wifi_gPower_On;
 	
 	  uint8_t noBuzzer_sound_dry_flag;
 	  
@@ -168,8 +166,6 @@ typedef struct _RUN_T{
 	  uint8_t ptc_warning;
 	  uint8_t ptc_remove_warning_send_data;
 
-	   uint8_t fan_warning;
-
 
 	  uint8_t gTimer_app_power_on;
 	  uint8_t gTimer_publish_dht11;
@@ -177,12 +173,14 @@ typedef struct _RUN_T{
 	  uint8_t gTimer_auto_detected_net_link_state;
 	  uint8_t gTimer_fan_adc_times;
 	  uint8_t gTimer_ptc_adc_times;
-      uint8_t gTimer_food_dog;
+      uint8_t fan_warning;
 	
 
 	  
 	  
 	  
+     uint8_t gTimer_login_times;
+	 uint8_t gTimer_food_dog;
 
 
 	uint8_t gTimer_senddata_panel;
@@ -223,8 +221,9 @@ void SystemReset(void);
 
 void MainBoard_Self_Inspection_PowerOn_Fun(void);
 
-void RunCommand_DisplayBoard_Handler(void);
+void RunCommand_Connect_Handler(void);
 
+void Tencent_Cloud_Timer_Power_On(void);
 
 #endif 
 

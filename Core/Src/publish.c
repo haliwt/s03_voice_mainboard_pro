@@ -2,7 +2,7 @@
 #include "esp8266.h"
 #include "mqtt_iot.h"
 #include "run.h"
-#include "dht11.h"
+#include "bsp_dht11.h"
 
 
 static void property_report_ptc_temp_wanrning(uint8_t warning);

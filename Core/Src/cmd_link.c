@@ -6,7 +6,7 @@
 #include "interrupt_manager.h"
 #include "subscription.h"
 #include "wifi_fun.h"
-#include "buzzer.h"
+#include "bsp_buzzer.h"
 
 #define MAX_BUFFER_SIZE  30
 
@@ -50,9 +50,14 @@ void (*EUSART_RxDefaultInterruptHandler)(void);
 void Decode_Function(void)
 {
    if(run_t.decodeFlag==1){
-      //run_t.decodeFlag =0;
+
+    
+      // run_t.decodeFlag =0;
+	  run_t.process_run_guarantee_flag=1;
       Decode_RunCmd();
-  }
+   
+      
+     }
 }
 
 void USART1_Cmd_Error_Handler(UART_HandleTypeDef *huart)
@@ -63,7 +68,7 @@ void USART1_Cmd_Error_Handler(UART_HandleTypeDef *huart)
    if(huart==&huart1){
 
 
-      if(run_t.gTimer_usart_error >27){
+      if(run_t.gTimer_usart_error >5){
 	  	run_t.gTimer_usart_error=0;
 	     __HAL_UART_CLEAR_OREFLAG(&huart1);
 		 temp = USART1->RDR;
@@ -86,7 +91,7 @@ void USART2_Cmd_Error_Handler(UART_HandleTypeDef *huart)
 	if(huart==&huart2){
 
 
-      if(run_t.gTimer_usart2_error >11){
+      if(run_t.gTimer_usart2_error >5){
 	  	run_t.gTimer_usart2_error=0;
 
            __HAL_UART_CLEAR_OREFLAG(&huart2);
@@ -94,7 +99,7 @@ void USART2_Cmd_Error_Handler(UART_HandleTypeDef *huart)
 
           temp = USART2->RDR;
 
-		   UART_Start_Receive_IT(&huart2,(uint8_t *)wifi_usart_data.wifi_inputBuf,1);
+		   UART_Start_Receive_IT(&huart2,(uint8_t *)UART2_DATA.UART_DataBuf,1);
 		
 		
          	}

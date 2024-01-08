@@ -49,10 +49,10 @@ typedef struct usart
     unsigned char UART_Data[150]; 
     unsigned char UART_Flag;
     unsigned int UART_Cnt;
-    unsigned char wifi_inputBuf[1];
+    unsigned char UART_DataBuf[1];
 }USART_DataBuf;
 
-extern USART_DataBuf wifi_usart_data;
+extern USART_DataBuf UART2_DATA;
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

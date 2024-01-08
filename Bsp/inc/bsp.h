@@ -9,12 +9,12 @@
 
 #include "run.h"
 #include "wifi_fun.h"
-#include "dht11.h"
+#include "bsp_dht11.h"
 #include "fan.h"
 #include "tim.h"
 #include "cmd_link.h"
 #include "special_power.h"
-#include "buzzer.h"
+#include "bsp_buzzer.h"
 #include "esp8266.h"
 #include "mqtt_iot.h"
 #include "publish.h"
@@ -30,8 +30,6 @@
 void bsp_Idle(void);
 
 
-void Power_On_From_Display_Hanlder(void);
-void Power_Off_From_Display_Hanlder(void);
 
 
 #endif 

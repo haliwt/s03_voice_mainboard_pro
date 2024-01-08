@@ -21,7 +21,7 @@
 #include "adc.h"
 
 /* USER CODE BEGIN 0 */
-#include "buzzer.h"
+#include "bsp_buzzer.h"
 #include "run.h"
 #include "fan.h"
 #include "mqtt_iot.h"
@@ -300,6 +300,36 @@ static void Judge_PTC_Temperature_Value(void)
 				
 	   	}
 }
+
+void Get_Ptc_Has_Detected(void)
+{
+        run_t.gDry =0 ;
+		PTC_SetLow(); //turn off
+        run_t.ptc_warning =1;
+        
+		MqttData_Publish_SetPtc(0);
+		HAL_Delay(350);  
+		
+		
+		Buzzer_KeySound();
+		HAL_Delay(100);
+		Buzzer_KeySound();
+		HAL_Delay(100);
+		Buzzer_KeySound();
+		HAL_Delay(100);
+		Buzzer_KeySound();
+		HAL_Delay(100);
+		Buzzer_KeySound();	
+		HAL_Delay(100);
+		SendWifiCmd_To_Order(PTC_ERROR); //0xE0
+		HAL_Delay(5);
+		
+
+		Publish_Data_Warning(ptc_temp_warning,warning);
+	    HAL_Delay(350);
+
+
+}
 /*****************************************************************
 	*
 	*Function Name: void Get_Fan_Adc_Fun(uint8_t channel,uint8_t times)
@@ -333,45 +363,65 @@ void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times)
 
   if(fan_detect_voltage < 350){ //500  now and then is bug false alarm rate  .
        detect_error_times++;
-	   if(detect_error_times >2){
+	   if(detect_error_times >1){
 	   	
 		 
 		   run_t.fan_warning = 1;
 		   
-		
-          MqttData_Publis_SetFan(0);
-	      HAL_Delay(350);
-
-
-
-
-	
 		   Publish_Data_Warning(fan_warning,warning);
 	       HAL_Delay(350);
 		 
 	    
-	       Buzzer_KeySound();
-	       HAL_Delay(100);
+	      
 		   Buzzer_KeySound();
 	       HAL_Delay(100);
 		   Buzzer_KeySound();
 	       HAL_Delay(100);
 		   Buzzer_KeySound();
 	       HAL_Delay(100);
-		   Buzzer_KeySound();	
-		   HAL_Delay(100);
+		 
            SendWifiCmd_To_Order(FAN_ERROR); //0xE1,
             HAL_Delay(5);
 
-	
-
-		   Publish_Data_Warning(fan_warning,warning);
+	       MqttData_Publis_SetFan(0);
 	       HAL_Delay(350);
+           SendWifiCmd_To_Order(FAN_ERROR); //0xE1,
+
+		 //   Publish_Data_Warning(fan_warning,warning);
+	     //  HAL_Delay(350);
 		}
 	          
 
      }
 }
 
-    
+void Get_Fan_Has_Detected(void)
+{
+
+        
+	   	
+		 
+		   run_t.fan_warning = 1;
+		   
+		   Publish_Data_Warning(fan_warning,warning);
+	       HAL_Delay(350);
+		 
+	    
+	      
+		   Buzzer_KeySound();
+	       HAL_Delay(100);
+		   Buzzer_KeySound();
+	       HAL_Delay(100);
+		   Buzzer_KeySound();
+	       HAL_Delay(100);
+	
+           SendWifiCmd_To_Order(FAN_ERROR); //0xE1,
+           HAL_Delay(5);
+
+	       MqttData_Publis_SetFan(0);
+	       HAL_Delay(350);
+           
+
+
+}    
 

@@ -48,7 +48,8 @@ void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times);
 
 
 void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times);
-
+void Get_Ptc_Has_Detected(void);
+void Get_Fan_Has_Detected(void);
 
 /* USER CODE END Prototypes */
 

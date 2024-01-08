@@ -4,7 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "bsp.h"
+#include "mqtt_iot.h"
+#include "esp8266.h"
+#include "run.h"
+#include "usart.h"
 
 
 #define TOKEN_ID      "123"
@@ -76,7 +79,7 @@ static void Mqtt_Value_update_data(void)
 {
     
     sg_info.open = 1;
-	if(model_state()==0)run_t.gModel =1;
+	if(run_t.gModel==0)run_t.gModel =1;
 	sg_info.state = run_t.gModel;
 	sg_info.ptc  = run_t.gDry;
 	sg_info.anion = run_t.gPlasma;
@@ -91,6 +94,7 @@ static void Mqtt_Value_update_data(void)
 static void Mqtt_power_off_Value(void)
 {
     run_t.set_wind_speed_value=10;
+    run_t.set_temperature_value=20;
    	sg_info.open=0;
     sg_info.state=1;
     sg_info.ptc=0; 

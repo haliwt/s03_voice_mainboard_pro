@@ -6,11 +6,11 @@
   ******************************************************************************
   * @attention
   *
-  * This software is voice sound mainboard Codes
-  * UYIJIA Version 1.0  DATA.2024.01.06
+  * Copyright (c) 2022 STMicroelectronics.
+  * UYIJIA Version 4.2  DATA.2023.07.27
   *
-  * 
-  * 
+  * UYIJIA Version 4.3  DATA.2023-08-12 //optimize touch key sensitivity high
+  * .
   * 
   *
   ******************************************************************************
@@ -90,28 +90,25 @@ int main(void)
 
   MX_ADC1_Init();
 
-  MX_IWDG_Init();
+
   MX_TIM1_Init();
   MX_TIM3_Init();
-  MX_TIM14_Init();
-  
+   MX_TIM14_Init();
   MX_TIM16_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
-  
-  ctl_Init();
   /* USER CODE BEGIN 2 */
    HAL_TIM_Base_Start_IT(&htim3);//HAL_TIM_Base_Start(&htim3);
    UART_Start_Receive_IT(&huart1,inputBuf,1);
    //DMA usart2
-   UART_Start_Receive_IT(&huart2,wifi_usart_data.wifi_inputBuf,1);
+   UART_Start_Receive_IT(&huart2,UART2_DATA.UART_DataBuf,1);
   /* USER CODE END 2 */
 
     __HAL_UART_ENABLE_IT(&huart1,UART_IT_ERR);
     __HAL_UART_ENABLE_IT(&huart2,UART_IT_ERR);
-	run_t.power_off_fan_state=1;
-    run_t.rx_command_tag= POWER_OFF;
-  
+
+   run_t.rx_command_tag= RUN_COMMAND;
+   run_t.RunCommand_Label = POWER_OFF_FAN_RUN_ONE_MINUTE;
 
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -119,24 +116,28 @@ int main(void)
     /* USER CODE END WHILE */
    
     /* USER CODE BEGIN 3 */
-	bsp_Idle();
 	MainBoard_Self_Inspection_PowerOn_Fun();
-    Decode_Function();
-	Power_On_From_Display_Hanlder();
-	Power_Off_From_Display_Hanlder();
+
+	Decode_Function();
 
     if( run_t.decodeFlag ==0){
 	
-    	RunCommand_DisplayBoard_Handler();
-    	
-        RunWifi_Command_Handler();
+    	RunCommand_Connect_Handler();
+        RunCommand_MainBoard_Fun();
+	    RunWifi_Command_Handler();
+        
+    
         if(wifi_t.get_rx_beijing_time_enable==0){
     	     Tencent_Cloud_Rx_Handler();
     		 Json_Parse_Command_Fun();
     	}
-        USART1_Cmd_Error_Handler(&huart1);
-        USART2_Cmd_Error_Handler(&huart2);
+       
    }
+   USART1_Cmd_Error_Handler(&huart1);
+   USART2_Cmd_Error_Handler(&huart2);
+   
+	
+
   }
   /* USER CODE END 3 */
 }
@@ -203,7 +204,7 @@ void Error_Handler(void)
       __HAL_UART_CLEAR_OREFLAG(&huart2);
 	   temp = USART2->RDR;
 
-	   UART_Start_Receive_IT(&huart2,(uint8_t *)wifi_usart_data.wifi_inputBuf,1);
+	   UART_Start_Receive_IT(&huart2,(uint8_t *)UART2_DATA.UART_DataBuf,1);
   }
   /* User can add his own implementation to report the HAL error return state */
  // __disable_irq();
